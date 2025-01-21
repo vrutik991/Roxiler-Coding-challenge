@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+
+<body>
+    <h1>Home</h1>
+    <form action="/home" method="POST">
+        <label for="search">Search:</label>
+        <input type="search" id="search" name="searchName">
+        <button type="submit">Search</button>
+        <div>
+            <label for="month">Month:</label>
+            <select name="month" id="month">
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March" selected>March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+            </select>
+
+            <table border="1">
+                <tr>
+                    <th>id</th>
+                    <th>title</th>
+                    <th>price</th>
+                    <th>description</th>
+                    <th>image</th>
+                    <th>sold</th>
+                    <th>dateofSale</th>
+                </tr>
+                    <%  for(let item of search) { %>
+                        <tr>
+                            <th><%=item.id%></th>
+                            <th><%=item.title%></th>
+                            <th><%=item.price%></th>
+                            <th><%=item.description%></th>
+                            <th><%=item.image%></th>
+                            <th><%=item.sold%></th>
+                            <th><%=item.dateOfSale%></th>
+                        </tr>
+                        <% } %>
+
+            </table>
+        </div>
+    </form>
+</body>
+
+</html>
