@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import axios from 'axios'
-import Pagination from '@mui/material/Pagination';
+import Pagination from './Pagination'
 
 function App() {
   const [items, setItems] = useState([]);
@@ -32,10 +32,6 @@ function App() {
       console.error("Error fetching data:", error);
     }
   }; 
-
-  let pages=[]; // empty array pages
-    for (let i=1;i<= Math.ceil(items.length/postsPerPage);i++) // 60 / 8 = 7 pages 
-        pages.push(i); // pages = [1,2,3,4,5,6,7]
 
 
   useEffect(() => {
@@ -83,17 +79,7 @@ function App() {
         </tbody>
       </table>
       <br />
-      {/* <Pagination totalposts={items.length} postsperpage={postsPerPage}></Pagination> */}
-        {
-            pages.map((page,index) =>
-            {
-                return <button key={index} onClick={() =>
-                {
-                  setcurrentPage(page);
-                }
-                }>{page}</button>;
-            })
-        }         
+      <Pagination totalposts={items.length} postsperpage={postsPerPage} setcurrentPage={setcurrentPage}></Pagination>      
     </>
   )
 }
