@@ -24,7 +24,7 @@ const amazonawsSchema = new Schema({
         type:String,
     },
     sold:{
-        type:Boolean
+        type:String,
     },
     dateOfSale:{
         type:Date
