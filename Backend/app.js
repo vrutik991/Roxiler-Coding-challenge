@@ -3,17 +3,9 @@ const app = express();
 const mongoose = require("mongoose");
 require('dotenv').config();
 const aws = require("./models/amazonaws.js");
-const axios = require("axios");
-const path = require("path");
-const methodOverride = require("method-override");
-const ejsMate = require("ejs-mate");
 const cors = require('cors');
 
-app.set("view engine","ejs");
-app.set("views",path.join(__dirname,"views"));
 app.use(express.urlencoded({extended:true}));
-app.use(methodOverride("_method"));
-app.engine('ejs',ejsMate);
 app.use(cors({ origin: 'http://localhost:5173' }));
 
 async function main()
@@ -35,29 +27,32 @@ app.listen(process.env.PORT,(req,res) =>
 
 app.get("/transactions",async (req,res) =>
 {   
-    // let response = axios.get("https://s3.amazonaws.com/roxiler.com/product_transaction.json")
-    // .then((response) => {  
-    //     let data = response.data;   
-    //     res.render("home.ejs",{data:data});
-    //     })
-    //     .catch((error) => {
-    //         console.error(error);
-    //         });
 
       const searchQuery = req.query.search;
-      const month = req.query.month;
-      console.log(req.query);
+      const {month , year} = req.query;
       let query = {};
     
       if (searchQuery) {
-        query = {
-          $or: [
+
+        query.$or =  [
             { title: { $regex: searchQuery, $options: 'i' } },
             { description: { $regex: searchQuery, $options: 'i' } }
           ]
-        };
       }
-    
+
+      if (month) {
+        const monthIndex = new Date(Date.parse(month + " 1 ", year)).getMonth(); // Convert month to index (0-based)
+        query.dateOfSale = {
+            $gte: new Date(year, monthIndex, 1),  // Start of the month
+            $lt: new Date(year, monthIndex + 1, 1) // Start of next month
+        };
+    }
+    try{
       const transactions = await aws.find(query);
       res.json(transactions);
+    } catch(error)
+    {
+      console.error("Error fetching transactions:",error);
+      res.status(500).json({error:"Internal Server Error"});
+    }
 })

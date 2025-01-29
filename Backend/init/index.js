@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const initData = require("./data.js");
 const aws = require("../models/amazonaws.js");
 const MONGO_URL = "mongodb://127.0.0.1:27017/api";
 
@@ -24,5 +23,4 @@ const initDB = async () =>
     await aws.insertMany(data);
     console.log("data was initialized");
 };
-
 initDB();
